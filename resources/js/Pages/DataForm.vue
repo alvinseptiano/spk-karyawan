@@ -11,17 +11,21 @@ import {
 } from '@heroicons/vue/24/solid';
 import { Head, router, usePage, WhenVisible } from '@inertiajs/vue3';
 import axios from 'axios';
-import { nextTick, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 const page = usePage();
 const modalType = ref('');
 const isModalOpen = ref(false);
 const formData = ref(null);
-const tableData = ref([]);
 const actionType = ref('');
 const showToast = ref(false);
 const toastMessage = ref('');
 const itemId = ref(0);
+// const tableData = ref([]);
+const tableData = computed(
+    () => page.props.data || { alternative: [], criteria: [], subcriteria: [] },
+);
+// const tableData = computed(() => page.props.data);
 
 const openModal = (type, action, data = null, id = null) => {
     modalType.value = type;
@@ -36,33 +40,41 @@ const handleDelete = (type, id, name) => {
 
     router.delete(`/${type}/${id}`, {
         preserveScroll: true,
-        onFinish: () => {
-            loading.value = false;
-        },
+        preserveState: true,
     });
 };
 
 const handleSubmit = async (formData) => {
-    await nextTick(); // Wait for all DOM and reactive updates to complete
+    await nextTick();
     try {
         let response;
         formData.type = modalType.value;
 
         if (modalType.value == 'subcriteria') {
-            console.log('sub criteria!!');
-            response = router.post(`/addsubcriteria/${itemId.value}`, formData);
+            response = await router.post(
+                `/addsubcriteria/${itemId.value}`,
+                formData,
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                },
+            );
         } else {
             if (actionType.value == 'edit') {
-                response = router.put('/update', formData);
+                response = await router.put('/update', formData, {
+                    preserveScroll: true,
+                    preserveState: true,
+                });
             } else {
-                response = router.post('/add', formData);
+                response = await router.post('/add', formData, {
+                    preserveScroll: true,
+                    preserveState: true,
+                });
             }
         }
 
         isModalOpen.value = false;
         formData.value = null;
-
-        // fetchItems;
 
         return response;
     } catch (error) {
@@ -75,7 +87,7 @@ const handleSubmit = async (formData) => {
 const fetchItems = async () => {
     try {
         const response = await axios.get(`/getdata`);
-        tableData.value = response.data.data;
+        tableData.value = response.data;
     } catch (error) {
         console.error('Error fetching items:', error);
     }
@@ -91,28 +103,17 @@ watch(
 );
 
 watch(
-    () => page.props.flash.refresh,
-    async (newValue) => {
-        if (newValue) {
-            await fetchItems();
-            // showToast.value = true;
-            router.visit(window.location.pathname, {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                // onSuccess: () => {
-                //     if (page.props.flash.message) {
-                //         toastMessage.value = page.props.flash.message;
-                //         showToast.value = true;
-                //         setTimeout(() => {
-                //             showToast.value = false;
-                //         }, 3000);
-                //     }
-                // },
-            });
+    () => page.props.flash,
+    (flash) => {
+        if (flash.message) {
+            toastMessage.value = flash.message;
+            showToast.value = true;
+            setTimeout(() => {
+                showToast.value = false;
+            }, 3000);
         }
     },
-    { immediate: true },
+    { immediate: true, deep: true },
 );
 
 onMounted(() => {

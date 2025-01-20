@@ -5,7 +5,10 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
-
+use App\Models\Criteria;
+use App\Models\SubCriteria;
+use App\Models\Score;
+use App\Models\User;
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -43,6 +46,11 @@ class HandleInertiaRequests extends Middleware
                 'message' => fn() => $request->session()->get('message'),
                 'refresh' => fn() => $request->session()->get('refresh')
             ],
+            'data' => fn() => [
+                'alternative' => User::all(),
+                'criteria' => Criteria::all(),
+                'subcriteria' => SubCriteria::all(),
+            ]
         ];
     }
 }

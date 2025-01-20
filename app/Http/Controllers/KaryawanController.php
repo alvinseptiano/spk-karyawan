@@ -67,10 +67,8 @@ class KaryawanController extends Controller
 
             // Create data based on type
             $model::create($formData);
+            redirect()->back()->with(['refresh' => true, 'message' => 'Item berhasil ditambah']);
 
-            return Redirect::back()
-                ->with('refresh', true)
-                ->with('message', 'Item berhasil ditambah');
         } catch (\Exception $e) {
             return Redirect::back()
                 ->with('error', 'An error occurred: ' . $e->getMessage());
