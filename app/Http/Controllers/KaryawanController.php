@@ -85,12 +85,12 @@ class KaryawanController extends Controller
                 'score' => Score::all(),
             ];
 
-            return response()->json([
-                'success' => true,
-                'refresh' => true,
-                'data' => $data,
-            ]);
-
+            // return response()->json([
+            //     'success' => true,
+            //     'refresh' => true,
+            //     'data' => $data,
+            // ]);
+            redirect()->back()->with(['refresh' => true, 'message' => '', 'data' => $data]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
