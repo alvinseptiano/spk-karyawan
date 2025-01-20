@@ -90,30 +90,30 @@ watch(
     },
 );
 
-// watch(
-//     () => page.props.flash.refresh,
-//     async (newValue) => {
-//         if (newValue) {
-//             await fetchItems();
-//             // showToast.value = true;
-//             router.visit(window.location.pathname, {
-//                 preserveScroll: true,
-//                 preserveState: true,
-//                 replace: true,
-//                 // onSuccess: () => {
-//                 //     if (page.props.flash.message) {
-//                 //         toastMessage.value = page.props.flash.message;
-//                 //         showToast.value = true;
-//                 //         setTimeout(() => {
-//                 //             showToast.value = false;
-//                 //         }, 3000);
-//                 //     }
-//                 // },
-//             });
-//         }
-//     },
-//     { immediate: true },
-// );
+watch(
+    () => page.props.flash.refresh,
+    async (newValue) => {
+        if (newValue) {
+            await fetchItems();
+            // showToast.value = true;
+            router.visit(window.location.pathname, {
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+                // onSuccess: () => {
+                //     if (page.props.flash.message) {
+                //         toastMessage.value = page.props.flash.message;
+                //         showToast.value = true;
+                //         setTimeout(() => {
+                //             showToast.value = false;
+                //         }, 3000);
+                //     }
+                // },
+            });
+        }
+    },
+    { immediate: true },
+);
 
 onMounted(() => {
     fetchItems();

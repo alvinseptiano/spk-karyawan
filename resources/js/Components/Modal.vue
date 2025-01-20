@@ -51,7 +51,7 @@ function validateForm() {
 
     // Validate age
     const age = calculateAge(form.data.dob);
-    if (isNaN(age) || age < 18) {
+    if (isNaN(age) || (age < 18 && form.type === 'alternative')) {
         validationError.value = 'Harus berusia 18 tahun ke atas!';
         return false;
     }
@@ -109,7 +109,9 @@ watch(
         @close="$emit('update:modelValue', false)"
     >
         <div class="modal-box relative max-w-64">
-            <h3 v-mode="form.type" class="text-lg font-bold">{{ title }}</h3>
+            <h3 v-mode="form.type" class="text-lg font-bold">
+                {{ form.type }}
+            </h3>
             <button
                 class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
                 type="button"
@@ -203,7 +205,7 @@ watch(
                             required
                         >
                             <option value="" disabled selected>
-                                Pick a color
+                                Pilih Kriteria
                             </option>
                             <option value="cost">Cost</option>
                             <option value="benefit">Benefit</option>
