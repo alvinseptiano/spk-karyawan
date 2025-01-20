@@ -103,7 +103,7 @@ watch(
 );
 
 watch(
-    () => page.props.flash,
+    () => page.props.flash || {},
     (flash) => {
         if (flash.message) {
             toastMessage.value = flash.message;
