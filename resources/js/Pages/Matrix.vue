@@ -1,20 +1,21 @@
 <script setup>
 import FlashMessage from '@/Components/FlashMessage.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link as InertiaLink } from '@inertiajs/vue3';
+import { Head, Link as InertiaLink, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
-const tableData = ref({}); // Initialize as an empty object
+const page = usePage();
+const tableData = computed(
+    () => page.props.data || { alternative: [], criteria: [], subcriteria: [] },
+);
 const selectedAlternative = ref(null);
 const selectedCriterion = ref(null);
 const selectedValue = ref('');
 const values = ref({});
 
 const scoreData = ref([]);
-const criteriaData = ref([]);
-const alternativeData = ref([]);
-const subcriteriaData = ref([]);
+// const subcriteriaData = ref([]);
 
 onMounted(async () => {
     try {
@@ -25,7 +26,7 @@ onMounted(async () => {
 });
 
 const getSubcriteria = (criterionId) => {
-    return subcriteriaData.value.filter(
+    return tableData.value.subcriteria.filter(
         (sub) => sub.criteria_id === criterionId,
     );
 };
@@ -81,19 +82,17 @@ const saveValue = async () => {
     }
 };
 
-const fetchItems = async () => {
-    try {
-        const dataResponse = await axios.get('/getdata');
+// const fetchItems = async () => {
+//     try {
+//         const response = await axios.get('/getdata');
 
-        tableData.value = dataResponse.data.data;
-        criteriaData.value = tableData.value.criteria;
-        alternativeData.value = tableData.value.alternative;
-        subcriteriaData.value = tableData.value.subcriteria;
-        scoreData.value = tableData.value.score;
-    } catch (error) {
-        console.error('Error fetching items:', error);
-    }
-};
+//         tableData.value = response.data;
+//         subcriteriaData.value = response.data.subcriteria;
+//         scoreData.value = tableData.value.score;
+//     } catch (error) {
+//         console.error('Error fetching items:', error);
+//     }
+// };
 </script>
 
 <template>
@@ -112,7 +111,7 @@ const fetchItems = async () => {
                         </th>
                         <th class="text-center" style="width: 15%">Nama</th>
                         <th
-                            v-for="criterion in criteriaData"
+                            v-for="criterion in tableData['criteria']"
                             :key="criterion.id"
                             class="text-center"
                         >
@@ -122,14 +121,14 @@ const fetchItems = async () => {
                 </thead>
                 <tbody>
                     <tr
-                        v-for="(item, index) in alternativeData"
+                        v-for="(item, index) in tableData['alternative']"
                         :key="item.id"
                         class="hover bg-base-200"
                     >
                         <td class="text-center">A{{ index + 1 }}</td>
                         <td class="text-center">{{ item.name }}</td>
                         <td
-                            v-for="criterion in criteriaData"
+                            v-for="criterion in tableData['criteria']"
                             :key="criterion.id"
                             class="cursor-pointer text-center"
                             @click="openModal(item, criterion)"
@@ -162,7 +161,7 @@ const fetchItems = async () => {
                             Alternatif
                         </th>
                         <th
-                            v-for="(criterion, index) in criteriaData"
+                            v-for="(criterion, index) in tableData['criteria']"
                             :key="criterion.id"
                             class="text-center"
                         >
@@ -172,13 +171,13 @@ const fetchItems = async () => {
                 </thead>
                 <tbody>
                     <tr
-                        v-for="(item, index) in alternativeData"
+                        v-for="(item, index) in tableData['alternative']"
                         :key="item.id"
                         class="hover bg-base-200"
                     >
                         <td class="text-center">A{{ index + 1 }}</td>
                         <td
-                            v-for="criterion in criteriaData"
+                            v-for="criterion in tableData['criteria']"
                             :key="criterion.id"
                             class="cursor-pointer text-center"
                             @click="openModal(item, criterion)"
