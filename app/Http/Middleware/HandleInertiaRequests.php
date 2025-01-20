@@ -50,6 +50,7 @@ class HandleInertiaRequests extends Middleware
                 'alternative' => User::all(),
                 'criteria' => Criteria::all(),
                 'subcriteria' => SubCriteria::all(),
+                'score' => Score::all(),
             ]
         ];
     }

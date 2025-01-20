@@ -3,7 +3,7 @@ import FlashMessage from '@/Components/FlashMessage.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link as InertiaLink, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const page = usePage();
 const tableData = computed(
@@ -13,17 +13,8 @@ const selectedAlternative = ref(null);
 const selectedCriterion = ref(null);
 const selectedValue = ref('');
 const values = ref({});
-
-const scoreData = ref([]);
-// const subcriteriaData = ref([]);
-
-onMounted(async () => {
-    try {
-        await fetchItems();
-    } catch (error) {
-        console.error('Error fetching items:', error);
-    }
-});
+const showToast = ref(false);
+const toastMessage = ref('');
 
 const getSubcriteria = (criterionId) => {
     return tableData.value.subcriteria.filter(
@@ -32,7 +23,7 @@ const getSubcriteria = (criterionId) => {
 };
 
 const getValue = (alternativeId, criteriaId) => {
-    const score = scoreData.value.find(
+    const score = tableData.value.score.find(
         (s) =>
             s.alternative_id === alternativeId && s.criteria_id === criteriaId,
     );
@@ -74,25 +65,25 @@ const saveValue = async () => {
             value: selectedValue.value,
         });
 
-        // Refresh table data
-        await fetchItems();
         closeModal();
     } catch (error) {
         console.error('Error saving value:', error);
     }
 };
 
-// const fetchItems = async () => {
-//     try {
-//         const response = await axios.get('/getdata');
-
-//         tableData.value = response.data;
-//         subcriteriaData.value = response.data.subcriteria;
-//         scoreData.value = tableData.value.score;
-//     } catch (error) {
-//         console.error('Error fetching items:', error);
-//     }
-// };
+watch(
+    () => page.props.flash || {},
+    (flash) => {
+        if (flash.message) {
+            toastMessage.value = flash.message;
+            showToast.value = true;
+            setTimeout(() => {
+                showToast.value = false;
+            }, 3000);
+        }
+    },
+    { immediate: true, deep: true },
+);
 </script>
 
 <template>

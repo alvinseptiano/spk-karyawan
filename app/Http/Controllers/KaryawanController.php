@@ -85,12 +85,7 @@ class KaryawanController extends Controller
                 'score' => Score::all(),
             ];
 
-            // return response()->json([
-            //     'success' => true,
-            //     'refresh' => true,
-            //     'data' => $data,
-            // ]);
-            redirect()->back()->with(['refresh' => true, 'message' => '', 'data' => $data]);
+            // redirect()->back()->with(['refresh' => true, 'message' => '', 'data' => $data]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -183,9 +178,6 @@ class KaryawanController extends Controller
     public function addSubCriteria(Request $request, $criteria_id)
     {
         $validatedData = $request->validate([
-            // 'data.id' => 'required|exists:criteria,id',
-            // 'type' => 'required|string|in:subcriteria',
-            // 'data' => 'required|array',
             'data.id' => 'required|integer',
             'data.name' => 'required|string|max:255',
             'data.value' => 'required|integer',
@@ -222,7 +214,7 @@ class KaryawanController extends Controller
     {
         try {
             $validated = $request->validate([
-                'alternative_id' => 'required|exists:users,id',
+                'alternative_id' => 'required|exists:users,id', // |exists:users,id',
                 'criteria_id' => 'required|exists:criterias,id', // Changed from criterion_id
                 'value' => 'required|numeric'
             ]);
@@ -235,7 +227,7 @@ class KaryawanController extends Controller
                 ['value' => $validated['value']]
             );
 
-            return Redirect::back()
+            return redirect()->back()
                 ->with('refresh', true)
                 ->with('message', 'Item berhasil ditambah');
         } catch (\Exception $e) {

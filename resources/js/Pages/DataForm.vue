@@ -10,8 +10,7 @@ import {
     TrashIcon,
 } from '@heroicons/vue/24/solid';
 import { Head, router, usePage, WhenVisible } from '@inertiajs/vue3';
-import axios from 'axios';
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 
 const page = usePage();
 const modalType = ref('');
@@ -21,11 +20,10 @@ const actionType = ref('');
 const showToast = ref(false);
 const toastMessage = ref('');
 const itemId = ref(0);
-// const tableData = ref([]);
+
 const tableData = computed(
     () => page.props.data || { alternative: [], criteria: [], subcriteria: [] },
 );
-// const tableData = computed(() => page.props.data);
 
 const openModal = (type, action, data = null, id = null) => {
     modalType.value = type;
@@ -83,16 +81,6 @@ const handleSubmit = async (formData) => {
     }
 };
 
-// Your existing fetchItems function
-const fetchItems = async () => {
-    try {
-        const response = await axios.get(`/getdata`);
-        tableData.value = response.data;
-    } catch (error) {
-        console.error('Error fetching items:', error);
-    }
-};
-
 watch(
     () => isModalOpen.value,
     (isOpen) => {
@@ -115,10 +103,6 @@ watch(
     },
     { immediate: true, deep: true },
 );
-
-onMounted(() => {
-    fetchItems();
-});
 </script>
 
 <template>
