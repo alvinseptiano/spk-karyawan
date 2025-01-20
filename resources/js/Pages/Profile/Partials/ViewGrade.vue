@@ -1,7 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue';
 import axios from 'axios';
-
+import { onMounted, ref } from 'vue';
 // Reactive variables
 const tableData = ref(null);
 const alternativeData = ref({});
@@ -81,7 +80,7 @@ onMounted(async () => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td v-for="(item, index) in scoreData">
+                            <td v-for="item in scoreData" :key="item.id">
                                 {{ item.value }}
                             </td>
                         </tr>
