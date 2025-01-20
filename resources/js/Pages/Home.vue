@@ -8,16 +8,15 @@ import { Head, Link as InertiaLink } from '@inertiajs/vue3';
         <Head title="Homepage" />
         <!-- <TopBar /> -->
         <div class="hero bg-base-300 flex h-screen justify-center">
-            <div class="hero-content text-center">
-                <div class="max-w-md">
-                    <h1 class="text-5xl font-bold">
-                        Sistem Pendukung Keputusan KARYAWAN SAW
+            <div class="hero-content -mt-30 text-center">
+                <div class="max-w-lg">
+                    <h1 class="text-4xl font-bold capitalize">
+                        Sistem Penilaian Kinerja Karyawan (SPKK) dengan
+                        menggunakan metode
+                        <i> simple additive weighting </i> (SAW) di pondok indah
+                        golf apartment
                     </h1>
-                    <p class="py-6">
-                        Didalam sistem ini digunakan algoritma SAW atau yang
-                        bisa disingkat dengan <i>Simple Additive Weighting</i>
-                    </p>
-                    <div class="flex justify-center gap-2">
+                    <div class="mt-10 flex justify-center gap-2">
                         <InertiaLink href="/login"
                             ><a class="btn btn-info"> Login </a></InertiaLink
                         >
