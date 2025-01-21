@@ -1,46 +1,55 @@
 <script setup>
-import { Link as InertiaLink } from '@inertiajs/vue3';
+import {
+    DocumentChartBarIcon,
+    HomeIcon,
+    NumberedListIcon,
+    UserCircleIcon,
+} from '@heroicons/vue/24/solid';
+import { Link } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 
-defineProps({
-    icon: {
-        type: Object,
-        required: true,
-    },
-    isOpen: { type: Boolean },
-    link: { type: String },
-    name: { type: String, required: true },
+const isOpen = ref(localStorage.getItem('sidebarOpen') === 'true' || false);
+
+watch(isOpen, (newValue) => {
+    localStorage.setItem('sidebarOpen', newValue);
 });
+
 const isActive = (path) => {
     return window.location.pathname === path;
 };
 </script>
 
 <template>
-    <li>
-        <InertiaLink
-            :href="`/${link}`"
-            :class="[
-                'relative flex items-center py-4',
-                {
-                    'bg-primary/10': isActive(`/${link}`),
-                },
-                !isOpen && 'justify-center',
-            ]"
+    <main class="mb-15 p-4">
+        <slot />
+    </main>
+    <div class="dock dock-top bg-base-300">
+        <Link
+            href="/preferensi"
+            :class="{ 'dock-active': isActive('/preferensi') }"
         >
-            <div
-                v-if="isActive(`/${link}`)"
-                class="bg-primary absolute top-0 left-0 h-full w-1"
-            ></div>
-            <component
-                :is="icon"
-                :class="[
-                    'size-5',
-                    {
-                        'text-primary': isActive(`/${link}`),
-                    },
-                ]"
-            />
-            <span :class="['ml-2', !isOpen && 'hidden']">{{ name }}</span>
-        </InertiaLink>
-    </li>
+            <HomeIcon class="size-[1.2em]" />
+            <span class="dock-label font-bold">Home</span>
+        </Link>
+        <button class="dock-active">hello</button>
+        <button
+            class="dock-active"
+            :class="{ 'dock-active active': isActive('/inputdata') }"
+        >
+            <Link href="/input-data">
+                <DocumentChartBarIcon class="size-[1.2em]" />
+                <span class="dock-label font-bold">Input Data</span>
+            </Link>
+        </button>
+
+        <Link href="/" :class="{ 'dock-active': isActive('/') }">
+            <NumberedListIcon class="size-[1.2em]" />
+            <span class="dock-label font-bold">Nilai Karyawan</span>
+        </Link>
+
+        <Link href="/profile" :class="{ 'dock-active': isActive('/profile') }">
+            <UserCircleIcon class="size-[1.2em]" />
+            <span class="dock-label font-bold">Profil</span>
+        </Link>
+    </div>
 </template>
