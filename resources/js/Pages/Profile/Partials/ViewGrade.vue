@@ -39,39 +39,44 @@ onMounted(async () => {
         <!-- Alternative Data -->
         <ul>
             ID:
-            <b>{{ alternativeData.id }}</b>
+            <b>{{ $page.props.auth.user.id }}</b>
         </ul>
         <ul>
             Nama Lengkap:
-            <b>{{ alternativeData.name }}</b>
+            <b>{{ $page.props.auth.user.name }}</b>
+        </ul>
+
+        <ul>
+            E-mail:
+            <b>{{ $page.props.auth.user.email }}</b>
         </ul>
         <ul>
             Tanggal Lahir:
             <b>{{
-                new Date(alternativeData.dob).toLocaleDateString('id-ID', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                })
+                new Date($page.props.auth.user.dob).toLocaleDateString(
+                    'id-ID',
+                    {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    },
+                )
             }}</b>
         </ul>
         <ul>
             Jabatan:
-            <b>{{ alternativeData.role }}</b>
+            <b>{{ $page.props.auth.user.role }}</b>
         </ul>
 
-        <!-- Scores Header -->
-        <header>
-            <h2>Nilai:</h2>
-        </header>
+        <h3 class="divider mb-8 text-xl font-bold">Nilai</h3>
 
         <!-- Score Table -->
         <div class="flex-center mb-20">
             <div class="flex-center container items-center">
-                <table class="table-bordered table items-center">
-                    <thead>
+                <table class="table items-center">
+                    <thead class="bg-base-300 text-center font-bold">
                         <th
-                            v-for="criterion in criteriaData"
+                            v-for="criterion in $page.props.data.criteria"
                             :key="criterion.id"
                             class="text-center"
                         >
