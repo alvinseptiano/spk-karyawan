@@ -1,166 +1,3 @@
-<!-- <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Chart, registerables } from 'chart.js';
-import { onMounted, ref } from 'vue';
-
-Chart.register(...registerables);
-
-// Reactive table data
-const tableData = ref(null);
-
-// Refs for Charts
-const radarChartRef = ref(null);
-const rankingChartRef = ref(null);
-let radarChart = null;
-let rankingChart = null;
-
-// Fetch Data Function (Simulated here)
-const fetchTableData = async () => {
-    try {
-        // Simulate fetching data
-        const response = await new Promise((resolve) =>
-            setTimeout(
-                () =>
-                    resolve({
-                        success: true,
-                        data: {
-                            matrix: {
-                                1: { 1: 5, 2: 5, 3: 5 },
-                                2: { 1: 4, 2: 4, 3: 4 },
-                                3: { 1: 4, 2: 3, 3: 4 },
-                            },
-                            ranking: [
-                                {
-                                    id: 1,
-                                    name: 'Alvin Septiano',
-                                    score: 0.0076,
-                                    rank: 1,
-                                },
-                                {
-                                    id: 2,
-                                    name: 'Alwin Nurdin',
-                                    score: 0.0068,
-                                    rank: 2,
-                                },
-                                {
-                                    id: 3,
-                                    name: 'Muhamad Hidayat',
-                                    score: 0.0062,
-                                    rank: 3,
-                                },
-                            ],
-                        },
-                    }),
-                500,
-            ),
-        );
-
-        if (response.success) {
-            tableData.value = response.data;
-            createRadarChart();
-            createRankingChart();
-        } else {
-            console.error('Failed to fetch data');
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-};
-
-// Initialize Radar Chart
-const createRadarChart = () => {
-    if (!tableData.value?.matrix) return; // Prevent errors if matrix is undefined
-
-    if (radarChart) radarChart.destroy(); // Destroy previous chart if exists
-
-    const criteriaLabels = Object.keys(tableData.value.matrix[1] || {}).map(
-        (key) => `C${key}`,
-    );
-
-    const datasets = Object.entries(tableData.value.matrix).map(
-        ([key, values], index) => {
-            const color = `hsl(${index * 120}, 70%, 60%)`;
-            return {
-                label: `A${key}`,
-                data: Object.values(values),
-                backgroundColor: `${color}66`,
-                borderColor: color,
-                borderWidth: 2,
-            };
-        },
-    );
-
-    radarChart = new Chart(radarChartRef.value, {
-        type: 'radar',
-        data: {
-            labels: criteriaLabels,
-            datasets,
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                r: {
-                    beginAtZero: true,
-                    min: 0,
-                    max: 5,
-                },
-            },
-        },
-    });
-};
-
-// Initialize Ranking Bar Chart
-const createRankingChart = () => {
-    if (!tableData.value?.ranking) return; // Prevent errors if ranking is undefined
-
-    if (rankingChart) rankingChart.destroy(); // Destroy previous chart if exists
-
-    const labels = tableData.value.ranking.map((item) => item.name);
-    const data = tableData.value.ranking.map((item) => item.score);
-
-    rankingChart = new Chart(rankingChartRef.value, {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [
-                {
-                    label: 'Final Score',
-                    data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
-    });
-};
-const fetchItems = async () => {
-    try {
-        const response = await axios.get('/saw/calculate');
-        tableData.value = response.data.data;
-        await nextTick();
-        fetchTableData();
-    } catch (error) {
-        console.error('Error fetching items:', error);
-    } finally {
-        isLoading.value = false;
-    }
-};
-// Fetch data on mount
-onMounted(() => {
-    fetchItems();
-});
-</script> -->
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import axios from 'axios';
@@ -173,9 +10,7 @@ Chart.register(...registerables);
 const tableData = ref(null);
 
 // Refs for Charts
-const radarChartRef = ref(null);
 const rankingChartRef = ref(null);
-let radarChart = null;
 let rankingChart = null;
 
 // Fetch Data Function (API call)
@@ -195,8 +30,6 @@ const fetchTableData = async () => {
         console.error('Error fetching data:', error);
     }
 };
-
-// Initialize Radar Chart (Limit to top 3 alternatives)
 
 // Initialize Ranking Bar Chart (Limit to top 3 rankings)
 const createRankingChart = () => {

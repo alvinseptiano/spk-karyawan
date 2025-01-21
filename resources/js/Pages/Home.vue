@@ -17,11 +17,11 @@ import { Head, Link as InertiaLink } from '@inertiajs/vue3';
                         golf apartment
                     </h1>
                     <div class="mt-10 flex justify-center gap-2">
-                        <InertiaLink href="/login"
+                        <!-- <InertiaLink href="/login"
                             ><a class="btn btn-info"> Login </a></InertiaLink
-                        >
+                        > -->
 
-                        <InertiaLink href="/rekomendasi">
+                        <InertiaLink href="/preferensi">
                             <button class="btn btn-primary">Ranking</button>
                         </InertiaLink>
                     </div>
