@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Alternative;
+use App\Models\User;
 use App\Models\Criteria;
 use App\Models\Score;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class WPService
     {
         try {
             $matrix = [];
-            $alternatives = Alternative::all();
+            $alternatives = User::all();
             $criterias = Criteria::all();
             
             // Get all scores efficiently
@@ -99,7 +99,7 @@ class WPService
 
             $matrix = $matrixResult['data'];
             $criterias = $matrixResult['criterias'];
-            $alternatives = Alternative::all();
+            $alternatives = User::all();
 
             // Calculate S Vector
             $sVector = $this->calculateSVector($matrix, $criterias);

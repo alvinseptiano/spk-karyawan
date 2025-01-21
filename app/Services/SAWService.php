@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Alternative;
+use App\Models\User;
 use App\Models\Criteria;
 use App\Models\Score;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class SawService
     {
         try {
             $matrix = [];
-            $alternatives = Alternative::all();
+            $alternatives = User::all();
             $criterias = Criteria::all();
             
             // Get all scores at once to avoid N+1 queries
@@ -142,7 +142,7 @@ class SawService
             }
 
             // Calculate final scores
-            $alternatives = Alternative::all();
+            $alternatives = User::all();
             $weightedScores = $weightedResult['data'];
             $finalScores = [];
 

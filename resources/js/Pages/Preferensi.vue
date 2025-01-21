@@ -68,7 +68,7 @@ onMounted(() => {
                     </tbody>
                 </table>
             </div>
-
+            <div class="divider"></div>
             <div
                 class="flex overflow-auto"
                 v-if="tableData && tableData['weighted']"
@@ -99,7 +99,7 @@ onMounted(() => {
                     </tbody>
                 </table>
             </div>
-
+            <div class="divider"></div>
             <div
                 class="flex overflow-auto"
                 v-if="tableData && tableData['normalization']"
@@ -130,7 +130,7 @@ onMounted(() => {
                     </tbody>
                 </table>
             </div>
-
+            <div class="divider"></div>
             <div
                 class="flex overflow-auto"
                 v-if="tableData && tableData['ranking']"
