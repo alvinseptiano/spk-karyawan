@@ -1,9 +1,9 @@
 <script setup>
 import FlashMessage from '@/Components/FlashMessage.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link as InertiaLink, usePage } from '@inertiajs/vue3';
+import { Head, Link as InertiaLink, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 
 const page = usePage();
 const tableData = computed(
@@ -59,6 +59,7 @@ const saveValue = async () => {
         selectedValue.value;
 
     try {
+        await nextTick();
         await axios.post('/addscore', {
             alternative_id: selectedAlternative.value.id,
             criteria_id: selectedCriterion.value.id,
@@ -66,6 +67,7 @@ const saveValue = async () => {
         });
 
         closeModal();
+        router.reload({ only: ['data'] });
     } catch (error) {
         console.error('Error saving value:', error);
     }

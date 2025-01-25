@@ -227,7 +227,7 @@ class KaryawanController extends Controller
                 ['value' => $validated['value']]
             );
 
-            return redirect()->back()
+            return Redirect::back()
                 ->with('refresh', true)
                 ->with('message', 'Item berhasil ditambah');
         } catch (\Exception $e) {
